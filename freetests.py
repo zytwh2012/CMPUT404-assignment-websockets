@@ -88,7 +88,7 @@ class WorldClient(WebSocketClient):
         
 if __name__ == '__main__':
     try:
-        os.system("killall gunicorn");
+        os.system("kill -9 $(lsof -t -i:8000)");
         os.system("bash run.sh &");
         print "Sleeping 3 seconds"
         gevent.sleep(3)
@@ -120,6 +120,6 @@ if __name__ == '__main__':
         ws.close()
         ws2.close()
         gevent.sleep(1)
-        os.system("killall gunicorn");
+        os.system("kill -9 $(lsof -t -i:8000)");
         print "Sleeping 2 seconds"
         gevent.sleep(2)
