@@ -48,6 +48,7 @@
    - [ ] Upon update all the clients should recv a websocket update message
    - [ ] Use JSON or XML to communicate (no plain text!)
    - [ ] The webservice can pass all the tests in freetests.py
+   - [ ] The webservice can pass all the tests in not-free-tests.py
    - [ ] The webservice can serve /static/index.html
    - [ ] static/index.html displays the current state of the webservice
    - [ ] static/index.html responds to clicks within 100ms on average
@@ -80,7 +81,8 @@
    - Marks will be deducted for using library code that does the assignment
 
 ** Marking
-   - 4 marks for passing all of the tests 
+   - 3 marks for passing all of the tests 
+   - 1 mark for passing all of not-free-tests
    - 2 marks for being usable in the browser
    - 1 mark for looking better than what I gave you
      
