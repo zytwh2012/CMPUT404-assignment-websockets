@@ -1,4 +1,4 @@
-FROM ubuntu:trusty
+FROM ubuntu:18.10
 RUN apt-get update
 RUN apt-get -y upgrade
 RUN apt-get install -y python-dev python-setuptools curl wget git vim 

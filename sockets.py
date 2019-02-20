@@ -84,13 +84,15 @@ def subscribe_socket(ws):
     return None
 
 
+# I give this to you, this is how you get the raw body/data portion of a post in flask
+# this should come with flask but whatever, it's not my project.
 def flask_post_json():
     '''Ah the joys of frameworks! They do so much work for you
        that they get in the way of sane operation!'''
     if (request.json != None):
         return request.json
-    elif (request.data != None and request.data != ''):
-        return json.loads(request.data)
+    elif (request.data != None and request.data.decode("utf8") != u''):
+        return json.loads(request.data.decode("utf8"))
     else:
         return json.loads(request.form.keys()[0])
 

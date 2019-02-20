@@ -41,6 +41,11 @@ import json
 world = dict()
 # set this to something sane 
 calls = 3000
+# ugh there's too much output? Well drop calls down
+# calls = 100
+
+def utf8(utf8bytes):
+    return utf8bytes.decode("utf-8")
 
 class WorldClient(WebSocketClient):
     def opened(self):
@@ -54,14 +59,14 @@ class WorldClient(WebSocketClient):
         world[entity] = data
         packet = { entity : data }
         self.send(json.dumps(packet))
-        print "Sent %s" % entity
+        print("Sent %s" % entity)
 
     def closed(self, code, reason):
         print(("Closed down %s " % self.name, code, reason))
 
     def receive_my_message(self,m):
-        print "RECV %s " % m
-        w = json.loads(m.data)
+        print("RECV %s " % m)
+        w = json.loads(utf8(m.data))
         kcnt = 0
         for key in w:
             if (key in world):
@@ -76,7 +81,7 @@ class WorldClient(WebSocketClient):
     def incoming(self):
         while self.count < calls:
             m = self.receive()
-            print "Incoming RECV %s %s " % (self.name,m)
+            print("Incoming RECV %s %s " % (self.name,m))
             if m is not None:
                 self.receive_my_message( m )
             else:
@@ -90,7 +95,7 @@ if __name__ == '__main__':
     try:
         os.system("kill -9 $(lsof -t -i:8000)");
         os.system("bash run.sh &");
-        print "Sleeping 3 seconds"
+        print("Sleeping 3 seconds")
         gevent.sleep(3)
         ws = WorldClient('ws://127.0.0.1:8000/subscribe', protocols=['http-only', 'chat'])
         ws2 = WorldClient('ws://127.0.0.1:8000/subscribe', protocols=['http-only', 'chat'])
@@ -111,15 +116,15 @@ if __name__ == '__main__':
         ws2.close()
         gws2.join(timeout=1)
         # here's our final test
-        print "%s %s" % (ws.count , ws2.count)
+        print("Counts: %s %s" % (ws.count , ws2.count))
         assert ws.count == calls, ("Expected Responses were given! %d %d" % (ws.count, calls))
         assert ws2.count >= (9*calls/10), ("2nd Client got less than 9/10 of the results! %s" % ws2.count)
-        print "Looks like the tests passed!"
+        print("Looks like the tests passed!")
     finally:
         #except KeyboardInterrupt:
         ws.close()
         ws2.close()
         gevent.sleep(1)
         os.system("kill -9 $(lsof -t -i:8000)");
-        print "Sleeping 2 seconds"
+        print("Sleeping 2 seconds")
         gevent.sleep(2)
