@@ -74,10 +74,11 @@ myWorld = World()
 
 def set_listener( entity, data ):
     ''' do something with the update ! '''
-    msg = json.dumps({entity: data})
-    [client.put(msg) for client in clients]
+    msg = flask.jsonify({entity: data})
+    for client in clients:
+        client.put(msg)
     return
-    
+
 myWorld.add_set_listener( set_listener )
         
 @app.route('/')
