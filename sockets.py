@@ -76,7 +76,7 @@ def set_listener( entity, data ):
     ''' do something with the update ! '''
     message = json.dumps({entity : data})
     for client in clients:
-        client.put(message )
+        client.put(message)
     return
 
 
@@ -92,10 +92,12 @@ def read_ws(ws,client):
     while True:
         msg = ws.receive()
         if (msg != None):
-            package = json.loads(msg)
-            # for each k,v set it to myword
-            for k, v in package.items():
-                myWorld.set(k, v)
+            if(msg == "new handshake"):
+                client.put(json.dumps(myWorld.world()))
+            else:
+                package = json.loads(msg)
+                for k, v in package.items():
+                    myWorld.set(k, v)
         else:
             break
     return None
