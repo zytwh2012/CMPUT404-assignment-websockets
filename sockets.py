@@ -74,7 +74,9 @@ myWorld = World()
 
 def set_listener( entity, data ):
     ''' do something with the update ! '''
-    msg = json.dumps({entity: data})
+    # msg = json.dumps({entity : data})
+    d = {entity: data}
+    msg = flask.jsonify(**d)
     for client in clients:
         client.put(msg)
     return
