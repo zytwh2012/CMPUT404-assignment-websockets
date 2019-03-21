@@ -89,17 +89,20 @@ def hello():
 
 def read_ws(ws,client):
     '''A greenlet function that reads from the websocket and updates the world'''
-    while True:
-        msg = ws.receive()
-        if (msg != None):
-            if(msg == "new handshake"):
-                client.put(json.dumps(myWorld.world()))
+    try:
+        while True:
+            msg = ws.receive()
+            if (msg != None):
+                if msg == '"handshake"':
+                    client.put(json.dumps(myWorld.world()))
+                else:
+                    package = json.loads(msg)
+                    for k, v in package.items():
+                        myWorld.set(k, v)
             else:
-                package = json.loads(msg)
-                for k, v in package.items():
-                    myWorld.set(k, v)
-        else:
-            break
+                break
+    except:
+        '''Done'''
     return None
 
 @sockets.route('/subscribe')

@@ -257,20 +257,19 @@ function wsSetup() {
     socket = new WebSocket(url);
     socket.onopen = function() {
         //XXX: TODO What are you going to do here?
-        socket.send(JSON.stringify("new handshake"));
-        newFlag = true;
+        socket.send(JSON.stringify("handshake"));
     };
     socket.onerror = function(msg) {
         debug("WebSocket Error:" + msg.data);
     };
     socket.onmessage = function(msg) {  
         try {
-            var msf = JSON.parse(msg.data);
-            for(key in msg){
-                world[key] = msg[key];
-            
+            var msg_data = JSON.parse(msg.data);
+            for(key in msg_data){
+                world[key] = msg_data[key];
+                drawNextFrame()
             }
-            drawNextFrame()
+           
             //XXX: TODO What are you going to do here?            
         } catch (e) {
             alert("socket on message: " + e);
